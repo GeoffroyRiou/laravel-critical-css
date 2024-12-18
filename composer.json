@@ -1,24 +1,33 @@
 {
     "name": "geoffroyriou/laravel-critical-css",
     "description": "A Laravel package that generates critical css for pages to boost performance.",
+    "type": "package",
+    "version": "1.0.0",
     "keywords": [
-      "php",
-      "github",
-      "laravel",
-      "Open Source",
-      "generator",
-      "command",
-      "laravel 11"
-    ],    
+        "php",
+        "github",
+        "laravel",
+        "Open Source",
+        "generator",
+        "command",
+        "laravel 11"
+    ],
     "require": {
-        "php": "^8.3",
-        "illuminate/support": "^11.0",
-        "illuminate/console": "^11.0"
+        "php": "^8.2",
+        "illuminate/support": "^10|^11",
+        "illuminate/console": "^10|^11"
     },
     "license": "MIT",
     "autoload": {
         "psr-4": {
             "Geoffroyriou\\LaravelCriticalCss\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Geoffroyriou\\LaravelCriticalCss\\Providers\\CriticalCssServiceProvider"
+            ]
         }
     },
     "authors": [
