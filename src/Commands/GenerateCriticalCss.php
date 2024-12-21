@@ -4,15 +4,20 @@ declare(strict_types=1);
 
 namespace GeoffroyRiou\LaravelCriticalCss\Commands;
 
+use Geoffroyriou\LaravelCriticalCss\Actions\GenerateCriticalCssFileName;
+use Geoffroyriou\LaravelCriticalCss\Actions\GenerateCriticalCssFolderPath;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Process;
+use Illuminate\Support\Facades\Storage;
 
 class GenerateCriticalCss extends Command
 {
     protected $signature = 'css:critical}';
 
-    public function handle()
-    {
+    public function handle(
+        GenerateCriticalCssFileName $generateFileNameAction,
+        GenerateCriticalCssFolderPath $generateFolderPath
+    ): void {
         $srcPath = dirname(__DIR__);
 
         $pages = [
@@ -23,18 +28,16 @@ class GenerateCriticalCss extends Command
 
         $this->info("Generating critical css for " . $nbPages . " pages");
 
-        $this->withProgressBar($pages, function (string $url) use ($srcPath): void {
-            
-            $cssFileName = preg_replace('#https?://[^/]+/?#', '', $url);
-            $cssFileName = str_replace('/', '-', $cssFileName);
-            $cssFileName = empty($cssFileName) ? 'index' : $cssFileName;
- 
-            $result = Process::run("node $srcPath/generate.mjs --url $url --filename $cssFileName");
+        $this->withProgressBar($pages, function (string $url) use ($srcPath, $generateFileNameAction, $generateFolderPath): void {
+
+            $cssFileName = $generateFileNameAction->execute($url);
+            $folderPath = $generateFolderPath->execute();
+
+            $result = Process::run("node $srcPath/generate.mjs --url $url --folder $folderPath --filename $cssFileName");
 
             if (!empty($result->errorOutput())) {
                 $this->error($result->errorOutput());
             }
-
         });
 
 
