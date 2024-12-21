@@ -1,25 +1,31 @@
 import { generate } from '../node_modules/critical/index.js';
 
-// process.argv is an array where:
-// - The first element is the path to the Node.js executable.
-// - The second element is the path to the JavaScript file being executed.
-// - The remaining elements are the command-line arguments.
-
+// Get the command line arguments
 const args = process.argv.slice(2); // Slice off the first two elements
 
-if (!args.length > 0) {
-    console.error('No pages to process.');
+// Parse the command line arguments
+const urlFlagIndex = args.indexOf('--url');
+const filenameFlagIndex = args.indexOf('--filename');
+let urlValue;
+let cssFileName;
 
-}else{
-    console.log('Pages', args);
-
-
-    //generate({
-    //    inline: true,
-    //    base: 'test/',
-    //    src: 'index.html',
-    //    target: 'index-critical.html',
-    //    width: 1300,
-    //    height: 900,
-    //});
+if (urlFlagIndex === -1) {
+    console.error('No page to process.');
+    process.exit();
+} else if (filenameFlagIndex === -1) {
+    console.error('No filename was provided.');
+    process.exit();
+} else {
+    urlValue = args[urlFlagIndex + 1];
+    cssFileName = args[filenameFlagIndex + 1];
 }
+
+// Generate the critical CSS
+generate({
+    inline: false,
+    base: 'critical/',
+    src: urlValue,
+    target: cssFileName + '-critical.css',
+    width: 1300,
+    height: 900,
+});
