@@ -2,7 +2,7 @@
 
 namespace GeoffroyRiou\LaravelCriticalCss\Providers;
 
-use \GeoffroyRiou\LaravelCriticalCss\Actions\GenerateCriticalCssFileName;
+use \GeoffroyRiou\LaravelCriticalCss\Actions\GenerateCommand\GenerateCriticalCssFileName;
 use \GeoffroyRiou\LaravelCriticalCss\Commands\GenerateCriticalCss;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Storage;
@@ -31,7 +31,7 @@ class CriticalCssServiceProvider extends \Illuminate\Support\ServiceProvider
         ]);
         $this->mergeConfigFrom(
             __DIR__ . '/../config/criticalcss.php',
-            'courier'
+            'criticalcss'
         );
 
         /**

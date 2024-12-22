@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace GeoffroyRiou\LaravelCriticalCss\Commands;
 
-use GeoffroyRiou\LaravelCriticalCss\Actions\GenerateCriticalCssFileName;
-use GeoffroyRiou\LaravelCriticalCss\Actions\GenerateCriticalCssFolderPath;
+use GeoffroyRiou\LaravelCriticalCss\Actions\GenerateCommand\GenerateCriticalCssFileName;
+use GeoffroyRiou\LaravelCriticalCss\Actions\GenerateCommand\GenerateCriticalCssFolderPath;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Process;
 
@@ -19,9 +19,9 @@ class GenerateCriticalCss extends Command
     ): void {
         $srcPath = dirname(__DIR__);
 
-        $pages = [
-            route('home'),
-        ];
+        $routes  = config('criticalcss.routes', []);
+
+        $pages = array_map(fn(string $route) => route($route), $routes);
 
         $nbPages = count($pages);
 
