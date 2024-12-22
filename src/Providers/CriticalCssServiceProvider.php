@@ -47,7 +47,7 @@ class CriticalCssServiceProvider extends \Illuminate\Support\ServiceProvider
         Blade::directive('criticalCss', function (string $cssFileUrl) use ($generateFileNameAction) {
 
             $cssFileUrl = trim($cssFileUrl, "'");
-            $fileFolder = trim(config('criticalcss.folder', 'critical'), '/');
+            $fileFolder = trim(config('criticalcss.destinationFolder', 'critical'), '/');
             $cssFilename = $generateFileNameAction->execute(request()->url());
             $cssFilePath = $fileFolder . '/' . $cssFilename;
 

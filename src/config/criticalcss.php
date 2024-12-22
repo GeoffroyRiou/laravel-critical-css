@@ -7,6 +7,7 @@ return [
 
     'folder' => 'criticalcss',
 
+    'routes' => [],
 
-    'routes' => []
+    'sitemapPath' => ''
 ];

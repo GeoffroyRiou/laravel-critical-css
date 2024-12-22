@@ -6,22 +6,27 @@ namespace GeoffroyRiou\LaravelCriticalCss\Commands;
 
 use GeoffroyRiou\LaravelCriticalCss\Actions\GenerateCommand\GenerateCriticalCssFileName;
 use GeoffroyRiou\LaravelCriticalCss\Actions\GenerateCommand\GenerateCriticalCssFolderPath;
+use GeoffroyRiou\LaravelCriticalCss\Actions\Sitemap\ExtractSitemapUrls;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Process;
 
 class GenerateCriticalCss extends Command
 {
-    protected $signature = 'css:critical}';
+    protected $signature = 'css:critical';
+
+    public function __construct(private readonly ExtractSitemapUrls $extract)
+    {
+        parent::__construct();
+    }
 
     public function handle(
         GenerateCriticalCssFileName $generateFileNameAction,
-        GenerateCriticalCssFolderPath $generateFolderPath
+        GenerateCriticalCssFolderPath $generateFolderPath,
     ): void {
+
         $srcPath = dirname(__DIR__);
 
-        $routes  = config('criticalcss.routes', []);
-
-        $pages = array_map(fn(string $route) => route($route), $routes);
+        $pages = array_merge($this->getPagesFromRoutes(), $this->getPagesFromSitemap());
 
         $nbPages = count($pages);
 
@@ -43,5 +48,38 @@ class GenerateCriticalCss extends Command
         $this->line("\n");
         $this->line('<bg=green;> Completed with success !</>');
         $this->line("\n");
+    }
+
+
+    /**
+     * Returns pages
+     */
+    private function getPagesFromSitemap(): array
+    {
+        $sitemapPath = config('criticalcss.sitemapPath', null);
+        $pages = [];
+
+        if (!empty($sitemapPath)) {
+            $pages = $this->extract->execute($sitemapPath);
+        }
+
+        return $pages;
+    }
+
+    private function getPagesFromRoutes(): array
+    {
+        $routes = config('criticalcss.routes', []);
+
+        $pages = [];
+
+        foreach ($routes as $routeName => $data) {
+            if (is_int($routeName)) {
+                $routeName = $data;
+                $data = [];
+            }
+            $pages[] = route($routeName, $data);
+        }
+
+        return $pages;
     }
 }
