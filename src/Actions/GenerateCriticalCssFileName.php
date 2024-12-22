@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Geoffroyriou\LaravelCriticalCss\Actions;
+namespace GeoffroyRiou\LaravelCriticalCss\Actions;
 
 class GenerateCriticalCssFileName
 {

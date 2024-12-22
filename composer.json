@@ -20,14 +20,7 @@
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Geoffroyriou\\LaravelCriticalCss\\": "src/"
-        }
-    },
-    "extra": {
-        "laravel": {
-            "providers": [
-                "Geoffroyriou\\LaravelCriticalCss\\Providers\\CriticalCssServiceProvider"
-            ]
+            "GeoffroyRiou\\LaravelCriticalCss\\": "src/"
         }
     },
     "authors": [

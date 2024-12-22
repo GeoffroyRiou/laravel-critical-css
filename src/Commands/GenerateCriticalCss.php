@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace GeoffroyRiou\LaravelCriticalCss\Commands;
 
-use Geoffroyriou\LaravelCriticalCss\Actions\GenerateCriticalCssFileName;
-use Geoffroyriou\LaravelCriticalCss\Actions\GenerateCriticalCssFolderPath;
+use GeoffroyRiou\LaravelCriticalCss\Actions\GenerateCriticalCssFileName;
+use GeoffroyRiou\LaravelCriticalCss\Actions\GenerateCriticalCssFolderPath;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Process;
-use Illuminate\Support\Facades\Storage;
 
 class GenerateCriticalCss extends Command
 {
