@@ -56,7 +56,7 @@ class GenerateCriticalCss extends Command
      */
     private function getPagesFromSitemap(): array
     {
-        $sitemapPath = config('criticalcss.sitemapPath', null);
+        $sitemapPath = config('criticalcss.sitemap_path', null);
         $pages = [];
 
         if (!empty($sitemapPath)) {
@@ -68,7 +68,7 @@ class GenerateCriticalCss extends Command
 
     private function getPagesFromRoutes(): array
     {
-        $routes = config('criticalcss.routes', []);
+        $routes = config('criticalcss.route_names', []);
 
         $pages = [];
 

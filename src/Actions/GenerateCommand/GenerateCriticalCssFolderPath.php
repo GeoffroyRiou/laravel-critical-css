@@ -12,7 +12,7 @@ class GenerateCriticalCssFolderPath
     {
 
         // Get storage folder path
-        $cssFileFolder = Storage::disk('local')->path(config('criticalcss.destinationFolder', 'critical'));
+        $cssFileFolder = Storage::disk(config('criticalcss.disk', 'local'))->path(config('criticalcss.folder', 'critical'));
 
         // Generating path from laravel project root
         $cssFileFolder = str_replace(app()->basePath(), '', $cssFileFolder);

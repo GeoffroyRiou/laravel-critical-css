@@ -34,4 +34,7 @@ generate({
     target: cssFileName,
     width: 1300,
     height: 900,
+    ignore: {
+        atrule: ['@font-face'],
+    },
 });

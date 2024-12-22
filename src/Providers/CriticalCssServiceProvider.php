@@ -2,6 +2,8 @@
 
 namespace GeoffroyRiou\LaravelCriticalCss\Providers;
 
+use GeoffroyRiou\LaravelCriticalCss\Actions\Directives\CriticalCssDirective;
+use GeoffroyRiou\LaravelCriticalCss\Actions\Directives\GenerateCriticalCssHtml;
 use \GeoffroyRiou\LaravelCriticalCss\Actions\GenerateCommand\GenerateCriticalCssFileName;
 use \GeoffroyRiou\LaravelCriticalCss\Commands\GenerateCriticalCss;
 use Illuminate\Support\Facades\Blade;
@@ -21,7 +23,8 @@ class CriticalCssServiceProvider extends \Illuminate\Support\ServiceProvider
      * Bootstrap services.
      */
     public function boot(
-        GenerateCriticalCssFileName $generateFileNameAction
+        GenerateCriticalCssFileName $generateFileNameAction,
+        CriticalCssDirective $criticalCssDirective
     ): void {
         /**
          * Configuration
@@ -44,19 +47,6 @@ class CriticalCssServiceProvider extends \Illuminate\Support\ServiceProvider
         /**
          * Blade directive
          */
-        Blade::directive('criticalCss', function (string $cssFileUrl) use ($generateFileNameAction) {
-
-            $cssFileUrl = trim($cssFileUrl, "'");
-            $fileFolder = trim(config('criticalcss.destinationFolder', 'critical'), '/');
-            $cssFilename = $generateFileNameAction->execute(request()->url());
-            $cssFilePath = $fileFolder . '/' . $cssFilename;
-
-            if (Storage::disk('local')->exists($cssFilePath)) {
-                $fileContent = Storage::disk('local')->get($cssFilePath);
-                return "<style><?php echo '$fileContent'; ?></style>
-                <link rel='preload' href='$cssFileUrl' as='style' onload='this.onload=null;this.rel=\"stylesheet\"'>
-                <noscript><link rel='stylesheet' href='$cssFileUrl'></noscript>";
-            }
-        });
+        Blade::directive('criticalCss', fn(string $cssFileUrl) => $criticalCssDirective->execute($cssFileUrl));
     }
 }
