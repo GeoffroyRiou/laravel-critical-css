@@ -38,5 +38,16 @@ return [
      * Ex: public/sitemap.xml
      * 
      ***********************************************************/
-    'sitemap_path' => ''
+    'sitemap_path' => '',
+
+    /***********************************************************
+     * 
+     * Css Selectors to include in critical css even if it is not shown in the viewport during the generation.
+     * 
+     * Selectors must be exactly the same as those used in the css
+     * 
+     * Ex: nav.main-menu will not work if the css declares .main-menu
+     * 
+     ***********************************************************/
+    'force_include' => [],
 ];

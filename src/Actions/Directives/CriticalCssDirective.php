@@ -17,17 +17,19 @@ class CriticalCssDirective
         $cssFilename = $this->generateFileNameAction->execute(request()->url());
         $cssFilePath = $fileFolder . '/' . $cssFilename;
 
+        $html = "<link rel='preload' href='$cssFileUrl' as='style' onload='this.onload=null;this.rel=\"stylesheet\"'>
+                
+                <noscript><link rel='stylesheet' href='$cssFileUrl'></noscript>";
+
         if (Storage::disk(config('criticalcss.disk', 'local'))->exists($cssFilePath)) {
 
             $fileContent = Storage::disk('local')->get($cssFilePath);
             $fileContent = str_replace("'", "\'", $fileContent);
 
-            return "
-            <style><?php echo '$fileContent'; ?></style>
-
-                <link rel='preload' href='$cssFileUrl' as='style' onload='this.onload=null;this.rel=\"stylesheet\"'>
-                
-                <noscript><link rel='stylesheet' href='$cssFileUrl'></noscript>";
+            $html .= "
+            <style><?php echo '$fileContent'; ?></style>";
         }
+
+        return $html;
     }
 }

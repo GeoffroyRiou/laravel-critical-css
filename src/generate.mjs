@@ -7,9 +7,12 @@ const args = process.argv.slice(2); // Slice off the first two elements
 const urlFlagIndex = args.indexOf('--url');
 const folderFlagIndex = args.indexOf('--folder');
 const filenameFlagIndex = args.indexOf('--filename');
+const forceIncludeFlagIndex = args.indexOf('--forceInclude');
+
 let urlValue;
 let folderPath;
 let cssFileName;
+let forceInclude;
 
 if (urlFlagIndex === -1) {
     console.error('No page to process.');
@@ -26,6 +29,10 @@ if (urlFlagIndex === -1) {
     cssFileName = args[filenameFlagIndex + 1];
 }
 
+if (forceIncludeFlagIndex !== -1 && args[forceIncludeFlagIndex + 1]) {
+    forceInclude = args[forceIncludeFlagIndex + 1].split(',');
+}
+
 // Generate the critical CSS
 generate({
     inline: false,
@@ -37,4 +44,9 @@ generate({
     ignore: {
         atrule: ['@font-face'],
     },
+    ignoreInlinedStyles: true,
+    penthouse: {
+        forceInclude: [],
+    }
+
 });

@@ -36,8 +36,9 @@ class GenerateCriticalCss extends Command
 
             $cssFileName = $generateFileNameAction->execute($url);
             $folderPath = $generateFolderPath->execute();
+            $forceInclude = implode(',', config('criticalcss.force_include', []));
 
-            $result = Process::run("node $srcPath/generate.mjs --url $url --folder $folderPath --filename $cssFileName");
+            $result = Process::run("node $srcPath/generate.mjs --url $url --folder $folderPath --filename $cssFileName --forceInclude $forceInclude");
 
             if (!empty($result->errorOutput())) {
                 $this->error($result->errorOutput());
