@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace GeoffroyRiou\LaravelCriticalCss\Actions\GenerateCommand;
+namespace GeoffroyRiou\LaravelCriticalCss\Actions\File;
 
 use Illuminate\Support\Facades\Storage;
 
-class GenerateCriticalCssFolderPath
+class GetCriticalCssFolderPath
 {
     public function execute(): string
     {

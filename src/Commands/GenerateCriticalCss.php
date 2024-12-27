@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace GeoffroyRiou\LaravelCriticalCss\Commands;
 
-use GeoffroyRiou\LaravelCriticalCss\Actions\GenerateCommand\GenerateCriticalCssFileName;
-use GeoffroyRiou\LaravelCriticalCss\Actions\GenerateCommand\GenerateCriticalCssFolderPath;
+use GeoffroyRiou\LaravelCriticalCss\Actions\File\GetCriticalCssFileName;
+use GeoffroyRiou\LaravelCriticalCss\Actions\File\GetCriticalCssFolderPath;
 use GeoffroyRiou\LaravelCriticalCss\Actions\Sitemap\ExtractSitemapUrls;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Process;
@@ -20,8 +20,8 @@ class GenerateCriticalCss extends Command
     }
 
     public function handle(
-        GenerateCriticalCssFileName $generateFileNameAction,
-        GenerateCriticalCssFolderPath $generateFolderPath,
+        GetCriticalCssFileName $generateFileNameAction,
+        GetCriticalCssFolderPath $generateFolderPath,
     ): void {
 
         $srcPath = dirname(__DIR__);

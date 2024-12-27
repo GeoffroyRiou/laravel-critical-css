@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace GeoffroyRiou\LaravelCriticalCss\Actions\GenerateCommand;
+namespace GeoffroyRiou\LaravelCriticalCss\Actions\File;
 
-class GenerateCriticalCssFileName
+class GetCriticalCssFileName
 {
     public function execute(string $url): string
     {
