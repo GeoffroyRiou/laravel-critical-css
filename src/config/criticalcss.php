@@ -50,4 +50,13 @@ return [
      * 
      ***********************************************************/
     'force_include' => [],
+
+    /***********************************************************
+     * 
+     * Use Vite overlay to defer css loading 
+     * 
+     * Automatically preload and defer non critical css.
+     * 
+     ***********************************************************/
+    'useViteCssDefer' => true,
 ];

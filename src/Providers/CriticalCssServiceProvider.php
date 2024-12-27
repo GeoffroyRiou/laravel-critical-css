@@ -2,6 +2,7 @@
 
 namespace GeoffroyRiou\LaravelCriticalCss\Providers;
 
+use DeferedVite;
 use GeoffroyRiou\LaravelCriticalCss\Actions\Directives\CriticalCssDirective;
 use \GeoffroyRiou\LaravelCriticalCss\Commands\GenerateCriticalCss;
 use Illuminate\Support\Facades\Blade;
@@ -13,7 +14,10 @@ class CriticalCssServiceProvider extends \Illuminate\Support\ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->bind(
+            \Illuminate\Foundation\Vite::class,
+            \GeoffroyRiou\LaravelCriticalCss\Vite\DeferedVite::class
+        );
     }
 
     /**

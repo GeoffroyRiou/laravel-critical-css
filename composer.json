@@ -15,7 +15,8 @@
     "require": {
         "php": "^8.2",
         "illuminate/support": "^10|^11",
-        "illuminate/console": "^10|^11"
+        "illuminate/console": "^10|^11",
+        "laravel/framework": "^11.31"
     },
     "license": "MIT",
     "autoload": {
