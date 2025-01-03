@@ -4,15 +4,16 @@ declare(strict_types=1);
 
 namespace GeoffroyRiou\LaravelCriticalCss\Commands;
 
-use GeoffroyRiou\LaravelCriticalCss\Actions\File\GetCriticalCssFileName;
-use GeoffroyRiou\LaravelCriticalCss\Actions\File\GetCriticalCssFolderPath;
+use GeoffroyRiou\LaravelCriticalCss\Actions\File\GetFileNameAction;
+use GeoffroyRiou\LaravelCriticalCss\Actions\File\GetFolderPathAction;
 use GeoffroyRiou\LaravelCriticalCss\Actions\Sitemap\ExtractSitemapUrls;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Process;
 
 class GenerateCriticalCss extends Command
 {
-    protected $signature = 'css:critical';
+    protected $signature = 'criticalcss:generate';
+    private int $nbErrors = 0;
 
     public function __construct(private readonly ExtractSitemapUrls $extract)
     {
@@ -20,11 +21,9 @@ class GenerateCriticalCss extends Command
     }
 
     public function handle(
-        GetCriticalCssFileName $generateFileNameAction,
-        GetCriticalCssFolderPath $generateFolderPath,
+        GetFileNameAction $generateFileNameAction,
+        GetFolderPathAction $generateFolderPath,
     ): void {
-
-        $srcPath = dirname(__DIR__);
 
         $pages = array_merge($this->getPagesFromRoutes(), $this->getPagesFromSitemap());
 
@@ -32,23 +31,36 @@ class GenerateCriticalCss extends Command
 
         $this->info("Generating critical css for " . $nbPages . " pages");
 
-        $this->withProgressBar($pages, function (string $url) use ($srcPath, $generateFileNameAction, $generateFolderPath): void {
+        $this->withProgressBar($pages, function (string $url) use ($generateFileNameAction, $generateFolderPath): void {
 
             $cssFileName = $generateFileNameAction->execute($url);
             $folderPath = $generateFolderPath->execute();
-            $forceInclude = implode(',', config('criticalcss.force_include', []));
+            $penthouseForceIncludeArguments = $this->getCommandlineArgumentsFromArrayValues('penthouse-forceInclude', config('criticalcss.force_include', []));
 
-            $result = Process::run("node $srcPath/generate.mjs --url $url --folder $folderPath --filename $cssFileName --forceInclude $forceInclude");
+            $result = Process::run(" critical $url --base $folderPath  --target $cssFileName --width 1300 --height 900 --ignore-atrule '@font-face' --ignoreInlinedStyles $penthouseForceIncludeArguments ");
 
             if (!empty($result->errorOutput())) {
+                $this->nbErrors++;
                 $this->error($result->errorOutput());
             }
         });
 
+        if ($this->nbErrors > 0) {
+            $this->line("\n");
+            $this->error("<bg=red;> Completed with $this->nbErrors error.s !</>");
+            $this->line("\n");
+        } else {
+            $this->line("\n");
+            $this->line('<bg=green;> Completed with success !</>');
+            $this->line("\n");
+        }
+    }
 
-        $this->line("\n");
-        $this->line('<bg=green;> Completed with success !</>');
-        $this->line("\n");
+    private function getCommandlineArgumentsFromArrayValues(string $optionName, array $values): string
+    {
+        return implode(' ', array_map(function ($value) use ($optionName) {
+            return "--$optionName '$value'";
+        }, $values));
     }
 
 

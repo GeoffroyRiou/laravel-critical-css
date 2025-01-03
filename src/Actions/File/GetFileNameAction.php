@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace GeoffroyRiou\LaravelCriticalCss\Actions\File;
 
-class GetCriticalCssFileName
+class GetFileNameAction
 {
     public function execute(string $url): string
     {

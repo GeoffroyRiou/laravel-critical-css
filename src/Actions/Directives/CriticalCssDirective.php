@@ -2,13 +2,13 @@
 
 namespace GeoffroyRiou\LaravelCriticalCss\Actions\Directives;
 
-use GeoffroyRiou\LaravelCriticalCss\Actions\File\GetCriticalCssFileName;
+use GeoffroyRiou\LaravelCriticalCss\Actions\File\GetFileNameAction;
 use Illuminate\Support\Facades\Storage;
 
 class CriticalCssDirective
 {
 
-    public function __construct(private readonly GetCriticalCssFileName $generateFileNameAction) {}
+    public function __construct(private readonly GetFileNameAction $generateFileNameAction) {}
 
     public function execute(): string
     {

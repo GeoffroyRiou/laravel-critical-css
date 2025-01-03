@@ -6,7 +6,7 @@ namespace GeoffroyRiou\LaravelCriticalCss\Actions\File;
 
 use Illuminate\Support\Facades\Storage;
 
-class GetCriticalCssFolderPath
+class GetFolderPathAction
 {
     public function execute(): string
     {
