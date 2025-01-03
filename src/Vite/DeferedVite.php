@@ -19,7 +19,7 @@ class DeferedVite extends Vite
             'as' => 'style',
             'href' => $url,
             'nonce' => $this->nonce ?? false,
-            'onload' => "this.rel='stylesheet';this.onload=null;console.log('here')",
+            'onload' => "this.rel='stylesheet';this.onload=null;",
             'fetchpriority' => 'high'
         ], $attributes));
 
@@ -42,6 +42,6 @@ class DeferedVite extends Vite
 
     private function shouldUseDeferLoading(): bool
     {
-        return !env('APP_DEBUG') && config('criticalcss.useViteCssDefer');
+        return config('criticalcss.useViteCssDefer');
     }
 }
